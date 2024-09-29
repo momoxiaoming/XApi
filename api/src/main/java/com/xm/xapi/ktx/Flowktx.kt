@@ -10,6 +10,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -99,7 +100,10 @@ fun <T> Flow<T>.collectLatestCancel(
  * @receiver MutableStateFlow<T>
  * @param block Function1<T, Any> 当返回值是true时,会取消掉当前协程,不再监听
  */
-fun <T> Flow<T>.collectCancel(scope: CoroutineScope = CoroutineScope(Dispatchers.Default), block: (T) -> Any) :Job{
+fun <T> Flow<T>.collectCancel(
+    scope: CoroutineScope = CoroutineScope(Dispatchers.Default),
+    block: (T) -> Any)
+:Job{
    return scope.launch {
         this@collectCancel.collect { it ->
             val ret = block.invoke(it)
@@ -115,8 +119,9 @@ fun <T> Flow<T>.collectCancel(scope: CoroutineScope = CoroutineScope(Dispatchers
  * @receiver MutableStateFlow<T>
  * @param t T
  */
-fun <T> MutableStateFlow<T>.sendEmit(t: T):Job {
-     return launch{
+fun <T> FlowCollector<T>.sendEmit(t: T,context: CoroutineContext = Dispatchers.Default,
+):Job {
+     return launch(context){
         this@sendEmit.emit(t)
     }
 }

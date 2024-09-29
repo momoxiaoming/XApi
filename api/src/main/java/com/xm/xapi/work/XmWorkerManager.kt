@@ -94,7 +94,7 @@ object XmWorkerManager {
             .build()
 
         //commit task
-        WorkManager.getInstance(XApi.app)
+        WorkManager.getInstance(XApi.getApp())
             .enqueueUniqueWork(clazzName, existingWorkPolicy, request) //设置唯一任务，保持策略
     }
 
@@ -105,6 +105,6 @@ object XmWorkerManager {
     fun stopWorker(clazz: Class<out XmCoroutineWorker>) {
         val clazzName = clazz.name
         XLogManager.i(TAG, "stopWorker, clazzName:$clazzName")
-        WorkManager.getInstance(XApi.app).cancelUniqueWork(clazzName)
+        WorkManager.getInstance(XApi.getApp()).cancelUniqueWork(clazzName)
     }
 }

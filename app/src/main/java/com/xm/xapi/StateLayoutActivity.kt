@@ -11,6 +11,7 @@ import com.xm.xapi.base.binding.ApiBindingViewBinder
 import com.xm.xapi.biz.kv.XKvManager
 import com.xm.xapi.databinding.ActivityStateLayoutBinding
 import com.xm.xapi.databinding.ItemSimpleListBinding
+import com.xm.xapi.ktx.collectCancel
 import com.xm.xapi.ktx.dp2px
 import com.xm.xapi.ktx.load
 import com.xm.xapi.ktx.loadCrop
@@ -39,6 +40,9 @@ class StateLayoutActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MainActivity.shrpFlow.collectCancel {
+            Log.d(TAG, "shrpFlow2: $it")
+        }
         XStateManager.default()
         binding =
             DataBindingUtil.setContentView<ActivityStateLayoutBinding>(this, R.layout.activity_state_layout)

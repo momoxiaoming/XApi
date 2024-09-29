@@ -20,7 +20,7 @@ object XKvManager : IKv {
 
 
     private val read by lazy {
-        XApi.app.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE)
+        XApi.getApp().getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE)
     }
 
     private val write by lazy {

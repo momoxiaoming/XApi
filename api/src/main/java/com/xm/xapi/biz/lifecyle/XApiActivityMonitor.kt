@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.collection.arraySetOf
 import androidx.lifecycle.*
 import com.xm.xapi.biz.log.XLogManager
+import java.lang.ref.WeakReference
 
 object XApiActivityMonitor {
     private const val TAG = "XApiActivityMonitor"
@@ -18,7 +19,7 @@ object XApiActivityMonitor {
     /**
      * 最后显示的activity
      */
-    private var lastResumeActivity: Activity? = null
+    private var lastResumeActivity:WeakReference<Activity>? = null
 
     /**
      * 创建activity列表
@@ -65,7 +66,7 @@ object XApiActivityMonitor {
      * 获取最后显示的activity
      */
     fun getLastResumeActivity(): Activity? {
-        return lastResumeActivity
+        return lastResumeActivity?.get()
     }
 
     /**
@@ -98,7 +99,7 @@ object XApiActivityMonitor {
 
         override fun onActivityResumed(activity: Activity) {
             XLogManager.i(TAG, "onActivityResumed, $activity")
-            lastResumeActivity = activity
+            lastResumeActivity=WeakReference(activity)
             resumeList.add(activity)
             callbacks.forEach {
                 it.onActivityResumed(activity)

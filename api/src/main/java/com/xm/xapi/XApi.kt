@@ -12,7 +12,7 @@ import com.xm.xapi.biz.lifecyle.XApiActivityMonitor
  */
 object XApi {
 
-    lateinit var app: Application
+    private lateinit var app: Application
 
     fun init(context: Context) {
         app = getApplication(context)
@@ -31,5 +31,9 @@ object XApi {
                 appContext as Application
             }
         }
+    }
+
+    fun getApp():Application{
+        return app
     }
 }

@@ -73,7 +73,7 @@ object XHttpManager {
                 proxySelector(NoProxySelector())
             }
             //设置缓存目录
-            val cacheDir = File(XApi.app.cacheDir, "response")
+            val cacheDir = File(XApi.getApp().cacheDir, "response")
             cache(Cache(cacheDir, 10 * 1024 * 1024L)) //10M
             addInterceptor(UseAgentInterceptor("OkHttp/${OkHttp.VERSION} android/${Build.VERSION.SDK_INT};"))
             connectTimeout(10, TimeUnit.SECONDS)//连接超时设置
@@ -158,7 +158,7 @@ object XHttpManager {
         override fun intercept(chain: Interceptor.Chain): Response {
             val request = chain.request()
             val originalResponse = chain.proceed(request)
-            return if (XApi.app.isNetConnected()) {
+            return if (XApi.getApp().isNetConnected()) {
                 originalResponse
             } else {
                 //没网络时候缓存4周.
